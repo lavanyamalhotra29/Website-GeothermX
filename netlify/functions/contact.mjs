@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import { Resend } from "resend";
 
-// 1. Read secrets from environment variables
+// 1. Mongo URI from env
 const MONGO_URI = process.env.MONGO_URI;
-const resend = new Resend(process.env.RESEND_API_KEY);
 
-// 2. Mongoose schema & model (same as your server.js)
+// 2. Mongoose schema & model
 const contactSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -13,13 +12,17 @@ const contactSchema = new mongoose.Schema({
   message: String,
 });
 
-// Prevent model overwrite in dev
+// Prevent model overwrite
 const Contact =
   mongoose.models.Contact || mongoose.model("Contact", contactSchema);
 
-// 3. Helper to reuse the DB connection between function calls
+// 3. Reuse DB connection
 async function connectDB() {
   if (mongoose.connection.readyState === 1) return; // already connected
+  if (!MONGO_URI) {
+    console.error("MONGO_URI env var is missing");
+    throw new Error("Database not configured");
+  }
   await mongoose.connect(MONGO_URI);
 }
 
@@ -49,7 +52,25 @@ export default async (req, context) => {
     const newContact = new Contact({ firstName, lastName, email, message });
     await newContact.save();
 
-    // 3️⃣ Send email via Resend
+    // 3️⃣ Get API key from env and create Resend client LATE (no crash at top)
+    const apiKey = process.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      console.error("RESEND_API_KEY env var is missing");
+      // We STILL return success for saving to DB, but warn about email
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message:
+            "Message saved, but email service is not configured on server.",
+        }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+
+    // 4️⃣ Send email via Resend
     await resend.emails.send({
       from: "GeoThermX <onboarding@resend.dev>",
       to: "llavanya_be24@thapar.edu",
@@ -57,7 +78,7 @@ export default async (req, context) => {
       text: `message from them :\n\n"${message}"\n\n`,
     });
 
-    // 4️⃣ Reply to frontend
+    // 5️⃣ Reply to frontend
     return new Response(
       JSON.stringify({ success: true, message: "Message saved & email sent" }),
       { status: 200, headers: { "Content-Type": "application/json" } }
