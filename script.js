@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+import {animate,scroll} from motion;
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.getElementById('navbar');
@@ -9,6 +11,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contact-form');
 
     let isMenuOpen = false;
+
+    //email 
+    //contact form backend :)
+    document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contact-form");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/.netlify/functions/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Message sent successfully!");
+        form.reset();
+      } else {
+        alert("Something went wrong: " + (data.error || "try again later"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again later.");
+    }
+  });
+});
+
 
     // Handle scroll events for navbar styling
     function handleScroll() {
@@ -54,43 +98,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle contact form submission
-    function handleFormSubmit(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
-        
-        // Simple form validation
-        const requiredFields = ['firstName', 'lastName', 'email', 'message'];
-        const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
-        
-        if (missingFields.length > 0) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(data.email)) {
-            alert('Please enter a valid email address.');
-            return;
-        }
-        
-        // Simulate form submission
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
+    // Handle contact form submission
+async function handleFormSubmit(e) {
+    e.preventDefault();
+
+    // Get form data
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+
+    // Simple form validation
+    const requiredFields = ['firstName', 'lastName', 'email', 'message'];
+    const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
+
+    if (missingFields.length > 0) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    // Button state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+
+    try {
+        // Send data to backend (Express server at http://localhost:5000/contact)
+        const response = await fetch("http://localhost:5000/contact", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
             alert('Thank you for your message! We\'ll get back to you soon.');
             e.target.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
+        } else {
+            alert(' Error: ' + result.error);
+        }
+    } catch (error) {
+        alert(' Could not send message. Please try again later.');
+        console.error(error);
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
     }
+}
+
 
     // Animate service cards on scroll
     function animateOnScroll() {

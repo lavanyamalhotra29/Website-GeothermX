@@ -16,9 +16,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
-}
 
-/* Navigation */
+}
 .navbar {
     position: fixed;
     top: 0;
@@ -170,7 +169,7 @@ body {
     position: absolute;
     inset: 0;
     background-image: url('media/logofinal.png');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
@@ -199,7 +198,12 @@ body {
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
-
+.brand-logo {
+    padding-right: 2px;
+  height: 120px; /* adjust as needed */
+  width: auto;
+  display: block;
+}
 @media (min-width: 768px) {
     .hero-title {
         font-size: 3.75rem;
@@ -459,6 +463,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     margin-top: 2rem;
+    border:2px solid #111827;
 }
 
 .stat-item {
@@ -594,129 +599,130 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Contact Section */
+/* -----------------------------
+   CONTACT SECTION (replace only)
+   ----------------------------- */
+
 .contact {
     padding: 5rem 0;
     background: white;
+    /* keep vertical flow for section content */
 }
 
+/* Grid container: mobile-first (1 column) */
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
+    grid-template-columns: 1fr; /* stack vertically on mobile */
+    gap: 2.5rem;               /* space between form & info when stacked */
+    width: 100%;
+    padding: 0 1rem;
+    align-items: start;        /* align children at top when side-by-side */
 }
 
+/* Desktop: make two columns (form wider than info) */
 @media (min-width: 1024px) {
     .contact-grid {
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 2fr 1fr; /* form (left) = 2fr, info (right) = 1fr */
+        gap: 3rem;
+        padding: 0;
     }
 }
 
-.contact-info-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #111827;
-    margin-bottom: 2rem;
+/* Form container: keep it full width inside its grid cell */
+.contact-form-container {
+    width: 100%;
 }
 
-.contact-items {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-}
-
-.contact-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1rem;
-    font-size: 1.5rem;
-    color: white;
-}
-
-.blue-bg {
-    background: #dbeafe;
-    color: #3b82f6;
-}
-
-.teal-bg {
-    background: #ccfbf1;
-    color: #14b8a6;
-}
-
-.orange-bg {
-    background: #fed7aa;
-    color: #ea580c;
-}
-
-.contact-label {
-    font-weight: 600;
-    color: #111827;
-}
-
-.contact-value {
-    color: #6b7280;
-}
-
-/* Contact Form */
+/* Form layout */
 .contact-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 100%;
+    margin: 0;
 }
 
+/* Form rows: single column on small, two columns on small tablets+ */
 .form-row {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 }
-
 @media (min-width: 640px) {
     .form-row {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 0.5rem;
-}
-
+/* Inputs */
 .form-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
+    border: 1.6px solid #d1d5db;
     border-radius: 0.5rem;
-    font-size: 1rem;
-    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
-.form-input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
+/* Textarea */
 .form-textarea {
-    resize: vertical;
     min-height: 120px;
+    padding: 0.75rem 1rem;
 }
+
+/* Contact info block */
+.contact-info {
+    width: 100%;
+}
+
+/* Title */
+.contact-info-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+}
+
+/* Contact items list */
+.contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Each item: icon + details */
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Icon sizing */
+.contact-icon {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* Link style in contact values */
+.contact-value a {
+    text-decoration: none;
+    color: #1d4ed8; /* nicer link color than raw blue */
+}
+
+/* small visual tweak: keep submit button width reasonable on desktop */
+@media (min-width: 1024px) {
+    .btn-form {
+        width: 60%; /* keeps button from being overly wide on very large screens */
+        max-width: 320px;
+    }
+}
+
 
 /* Footer */
 .footer {
