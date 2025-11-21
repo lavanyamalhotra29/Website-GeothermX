@@ -41,7 +41,7 @@ app.post("/contact", async (req, res) => {
     // 2️⃣ Send email to the user
     await resend.emails.send({
     from: "GeoThermX <onboarding@resend.dev>",
-    to: "llavanya_be24@thapar.edu",
+    to: "info.geothermx@gmail.com",
     subject: `their email : ${email}`,
       text: `message from them :  \n\n"${message}"\n\n `,
     });
