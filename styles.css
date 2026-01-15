@@ -878,3 +878,160 @@ html {
         font-size: 2rem;
     }
 }
+
+/* our team */
+.ourteam-bg{
+    /* background-color: #065f46; */
+    /* background: linear-gradient(to right,#0b664c 2% ,#0aaa78 50%,#0b664c 100%); */
+    /* background: linear-gradient(60deg, #1D2B64, #F8CDDA ); */
+    /* background: linear-gradient(60deg, #E55D87, #5FC3E4 ); */
+    /* background: linear-gradient(80deg, #00467F, #A5CC82 ); */
+    /* background: linear-gradient(130deg, #21623d 0% ,#57C785 50%, #EDDD53 100%); */
+    background: linear-gradient(150deg, #21623d 0% ,#aed75b 50%, #c5b840 100%);
+}
+.team {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    padding-top: 8rem;
+    justify-content: center;
+    overflow: hidden;
+}
+.team-title {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color:beige;
+    margin-bottom: 3.5rem;
+    line-height: 1.2;
+}
+.team-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 80rem;
+    margin: 0 auto;
+    align-items: center;
+    padding-bottom: 4rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.teamrows{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+.teamrow{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    flex-wrap: wrap;
+    gap: 2.8rem;
+}
+/* our team card flip */
+.teamcard {
+    aspect-ratio: 3/4;
+    position: relative;
+    height: 13rem;
+    width: 11rem;
+    margin: 0 auto;
+    perspective: 1000px; /* 3D depth */
+}
+
+.teamcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* Rotate the inner box on hover */
+.teamcard:hover .teamcard-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front + back faces */
+.teamcard-front,
+.teamcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Front: just the image */
+.teamcard-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* Back face */
+.teamcard-back {
+    background-color: rgb(35, 34, 34);
+    color:rgb(205, 198, 172);
+    transform: rotateY(180deg);
+    display: flex;
+    gap: 0.3rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+}
+
+/* Container below is still fine */
+.teamcard-container {
+    align-items: center;
+    gap: 0.2rem;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+}
+
+.person-name {
+    text-align: center;
+    font-size: large;
+    font-weight: 500;
+    color: rgb(68, 68, 58);
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .team-title {
+        padding-left: 1rem;
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+/* Mobiles */
+@media (max-width: 768px) {
+    .team-title {
+        padding-left: 1rem;
+        font-size: 1.9rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Small mobiles */
+@media (max-width: 480px) {
+    .team-title {
+        padding-left: 1rem;
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;  /* better wrapping for long title */
+    }
+}
+
+@media (max-width: 480px) {
+    .team-content {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+

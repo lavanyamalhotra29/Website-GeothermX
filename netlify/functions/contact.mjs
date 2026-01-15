@@ -73,7 +73,7 @@ export default async (req, context) => {
     // 4️⃣ Send email via Resend
     await resend.emails.send({
       from: "GeoThermX <onboarding@resend.dev>",
-      to: "llavanya_be24@thapar.edu",
+      to: "info.geothermx@gmail.com",
       subject: `their email : ${email}`,
       text: `message from them :\n\n"${message}"\n\n`,
     });

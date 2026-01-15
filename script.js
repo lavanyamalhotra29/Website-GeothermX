@@ -141,21 +141,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Mobile nav links
   mobileNavLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
+    if(link[0] == '#'){
+      link.addEventListener("click", (e) => {
       e.preventDefault();
       const targetId = link.getAttribute("href");
       closeMobileMenu();
       setTimeout(() => smoothScrollTo(targetId), 300);
     });
+    }
+    
   });
 
   // Desktop nav links
   navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
+    if(link[0] == '#'){
+      link.addEventListener("click", (e) => {
       e.preventDefault();
       const targetId = link.getAttribute("href");
       smoothScrollTo(targetId);
     });
+    }
+    
   });
 
   // CTA buttons scroll to contact
